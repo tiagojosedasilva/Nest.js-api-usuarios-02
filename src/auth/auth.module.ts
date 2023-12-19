@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, forwardRef } from "@nestjs/common";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthController } from "./auth.controller";
 import { UserModule } from "src/user/user.module";
@@ -9,10 +9,10 @@ import { AuthGuards } from "src/guards/auth.guard";
 
 @Module({
     imports: [ JwtModule.register({
-        secret: "3PDr8hYPZp;jh]u`+N7o+]3ui>Z{*?us"
-    }), UserModule, PrismaModule ],
+        secret: process.env.JWT_SECRET
+    }), forwardRef(() => UserModule), PrismaModule ],
     providers: [ AuthService ],
     controllers: [ AuthController ],
-    exports: [ ]
+    exports: [ AuthService ]
 })
 export class AuthModule{}
